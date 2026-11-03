@@ -24,3 +24,9 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
 - Notebook: demo cells match only final params (asserting a unique match), pick each config's median-AUC training
   seed, P3 analysed per game; warning not to switch JAX runtime within a stage.
 - Pilot demo videos re-rendered: the snapshots labelled 0.5M/1M were really 1.0M/1.5M steps.
+
+## Test/infrastructure changes after v5.1-review (no change to training or evaluation behaviour)
+- tests/test_stats.py: body moved into `run()` and a pytest entry point added; the file previously executed at import
+  time and ended with `raise SystemExit`, so `python -m pytest -q tests/` aborted with INTERNALERROR. `python tests/test_stats.py` behaves as before.
+- New: tests/_load.py + tests/conftest.py (load pqn_v5.py definitions without training), tests/test_reference.py
+  (independent audit against purejaxql 47af6d7), docs/REFERENCE_DIFF.md, tools/effective_args.py, docs/ENV.md.
