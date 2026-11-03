@@ -1,0 +1,15 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[  140.1s] upd 50/488 train_ret [8.1 7.9] dorm [0.172 0.172] wn_dense [18.  17.9]
+[  272.4s] upd 100/488 train_ret [27.3 28.4] dorm [0.07  0.023] wn_dense [19.7 19.8]
+[  407.7s] upd 150/488 train_ret [36.5 44. ] dorm [0.    0.016] wn_dense [21.3 21.4]
+[  549.6s] upd 200/488 train_ret [47.6 59.9] dorm [0.    0.031] wn_dense [22.3 22.5] eval [147. 122.]
+[  683.7s] upd 250/488 train_ret [56.7 68.9] dorm [0.008 0.008] wn_dense [23.  23.1]
+[  811.8s] upd 300/488 train_ret [63.6 68.7] dorm [0.078 0.008] wn_dense [23.5 23.6]
+[  939.3s] upd 350/488 train_ret [76.9 73.8] dorm [0.039 0.008] wn_dense [23.8 24. ]
+[ 1075.1s] upd 400/488 train_ret [78.1 80.3] dorm [0.023 0.008] wn_dense [23.9 24.1] eval [150.  51.]
+[ 1202.7s] upd 450/488 train_ret [85.3 83.2] dorm [0.008 0.023] wn_dense [23.9 24.2]
+[ 1311.3s] upd 488/488 train_ret [89.2 93.5] dorm [0.031 0.047] wn_dense [23.9 24.2] eval [142. 154.]
+done 1311.3111629486084

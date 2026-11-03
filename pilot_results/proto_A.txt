@@ -1,0 +1,4 @@
+A public     seed0 public cap= 1000 sticky=0.0: return  146.0 ±   0.0 [146, 146]  len   1000  capped 100%  distinct 1/16
+A public     seed0 robust cap=10000 sticky=0.1: return   53.4 ±  41.0 [16, 146]  len    369  capped   0%  distinct 16/16
+A public     seed1 public cap= 1000 sticky=0.0: return  150.0 ±   0.0 [150, 150]  len   1000  capped 100%  distinct 1/16
+A public     seed1 robust cap=10000 sticky=0.1: return   98.1 ±  65.3 [17, 248]  len    684  capped   0%  distinct 16/16
