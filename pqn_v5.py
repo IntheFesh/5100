@@ -157,6 +157,18 @@ def dormant_frac(h, tau=0.025):
     return jnp.mean(s / (jnp.mean(s) + 1e-9) <= tau)
 
 
+def sticky_select(u, p, prev, chosen):
+    """MinAtar sticky actions (Machado et al. 2018): with probability p the previously EXECUTED action `prev` is repeated,
+    otherwise the chosen action is executed. `u` ~ U[0,1). Pure function extracted from update()/greedy_eval() for
+    tests/test_protocol.py; the expression is unchanged (CHANGELOG)."""
+    return jnp.where(u < p, prev, chosen)
+
+
+def next_prev(done, act):
+    """Action memory of the sticky mechanism: the action just EXECUTED, reset to 0 (no-op) when the episode ended."""
+    return jnp.where(done, 0, act)
+
+
 def env_step(keys, est, act):
     """Like gymnax step (auto-reset) but also returns the pre-reset obs and a truncation flag."""
     def one(k, s, ac):
@@ -191,12 +203,12 @@ def update(carry, r0):
         chosen = jnp.where(jax.random.uniform(ke, greedy.shape) < eps, jax.random.randint(ka, greedy.shape, 0, n_act), greedy)
         # sticky actions live on the environment side, exactly as in MinAtar's Environment.act: with prob p the
         # previously EXECUTED action is repeated; the agent does not observe this and stores its CHOSEN action
-        act = jnp.where(jax.random.uniform(kst, greedy.shape) < a.sticky, prev_, chosen)
+        act = sticky_select(jax.random.uniform(kst, greedy.shape), a.sticky, prev_, chosen)
         nobs, nest, rew, done, trunc, fin = env_step(jax.random.split(ks, a.num_envs), est_, act)
         ep_ret_ = ep_ret_ + rew
         fin_ret = jnp.where(done, ep_ret_, jnp.nan)
         ep_ret_ = jnp.where(done, 0.0, ep_ret_)
-        prev_ = jnp.where(done, 0, act)
+        prev_ = next_prev(done, act)
         return (nobs, nest, ep_ret_, prev_, rng_), (obs_, chosen, rew, done.astype(jnp.float32), trunc.astype(jnp.float32), fin, q, fin_ret)
 
     (obs, est, ep_ret, prev, rng), (O, A_, R, D, TR, FIN_OBS, QV, FIN) = jax.lax.scan(step, (obs, est, ep_ret, prev, rng), None, a.num_steps)
@@ -265,7 +277,7 @@ def greedy_eval(params, rng, cap, sticky):
         obs_, est_, prev, ret, alive, ln, rng_, t = c
         rng_, ks, kst = jax.random.split(rng_, 3)
         greedy = jnp.argmax(net.apply(params, obs_)[0], -1)
-        act = jnp.where(jax.random.uniform(kst, (n,)) < sticky, prev, greedy)
+        act = sticky_select(jax.random.uniform(kst, (n,)), sticky, prev, greedy)
         nobs, nest, rew, done, _ = jax.vmap(env.step, in_axes=(0, 0, 0, None))(jax.random.split(ks, n), est_, act, ep)
         return (nobs, nest, act, ret + rew * alive, alive * (1 - done), ln + alive, rng_, t + 1)
 

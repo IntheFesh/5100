@@ -30,3 +30,8 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
   time and ended with `raise SystemExit`, so `python -m pytest -q tests/` aborted with INTERNALERROR. `python tests/test_stats.py` behaves as before.
 - New: tests/_load.py + tests/conftest.py (load pqn_v5.py definitions without training), tests/test_reference.py
   (independent audit against purejaxql 47af6d7), docs/REFERENCE_DIFF.md, tools/effective_args.py, docs/ENV.md.
+- Round 3: pqn_v5.py gains two pure helpers, `sticky_select(u, p, prev, chosen)` and `next_prev(done, act)`; the expressions
+  are moved verbatim out of `update()` / `greedy_eval()`. Verified bit-identical: a 2-seed, 20 480-step sticky-0.1 smoke run
+  produces the same JSON (apart from timings) and the same parameter pickle before and after the change.
+- New: tests/test_protocol.py (23 tests), pytest.ini (silences third-party FutureWarnings), docs/SEEDS.md;
+  tools/effective_args.py is now importable (`effective_rows`).
