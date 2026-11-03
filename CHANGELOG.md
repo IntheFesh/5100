@@ -35,3 +35,8 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
   produces the same JSON (apart from timings) and the same parameter pickle before and after the change.
 - New: tests/test_protocol.py (23 tests), pytest.ini (silences third-party FutureWarnings), docs/SEEDS.md;
   tools/effective_args.py is now importable (`effective_rows`).
+- Round 4: mechanism.py (predictions 1-3, pre-registered rules in its docstring and in verdicts.json), tests/synth.py, tests/test_mechanism.py,
+  tools/make_mech_smoke.sh. Reproduces the pilot slopes of the plan (2.26e5 / 1.54e5 / 2.32e5) from the pilot JSONs.
+- Round 5: make_zip.sh, notebook patched (timing hand-back note; mechanism.py after P0/P1/P2/P3 analysis; extra analyze.py --json_out calls;
+  demo labels use the real snapshot steps from the JSON `ckpts` field instead of the nominal 1M/3M/10M), tools/check_notebook.py,
+  tools/budget.py, tests/test_notebook.py, tests/test_budget.py.

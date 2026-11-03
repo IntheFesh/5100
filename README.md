@@ -25,6 +25,7 @@ dynamics + greedy policy). v5.1 therefore:
 | `tests/test_stats.py` | calibration of the statistics under H0 (false-positive rate, CI coverage) |
 | `render_demo.py` | 2-3 panel SpaceInvaders video; sticky 0.1; same env seeds; shows the **median full-episode score** of 9 greedy episodes; the game is never truncated, only the video; `--seed_indices` picks the training seed per panel |
 | `check_protocol.py`, `check_cap.py` | re-evaluate any saved model under the public and the robust protocol |
+| `mechanism.py` | tests of the plan's predictions 1-3 on a finished stage (`python mechanism.py <stage_dir> --out results/mechanism_<stage>/`): Lambda_t, slope s of ||W||^2-||W0||^2 vs sum eta^2, angle ratio A_none/A_NP vs 1/Lambda, weight-decay equilibrium; writes `verdicts.json` with pre-registered support / not supported / cannot judge rules |
 | `DRL_v5_colab.ipynb` | Colab Pro notebook running all of the above, results to Google Drive |
 | `pqn.py`, `plot_pilot.py`, `plot_pilot2.py`, `norm_slope.py` | the CPU pilot exactly as run (2 seeds, 2M steps), its plots and norm-slope fit |
 | `pilot_results/` | pilot logs, JSONs, `proto_*.txt`, and the two pilot demo videos |
@@ -48,3 +49,16 @@ Notes
 - `--bootstrap_timeout` bootstraps through time-limit truncation (Pardo et al., ICML 2018). `--buggy_target` cannot be combined with it (the public target has no truncation handling); with a 10000-step cap truncations are rare and `trunc_frac` is logged. In P3, Freeway's limit is a game rule and is treated as termination in every arm.
 - `--norm_ctrl` acts only on the LayerNorm-preceded layers (`conv`, `dense`, kernel and bias jointly). The output layer is never constrained.
 - Freeway's 2500-step limit is part of the game's rules and is kept in P3.
+
+## Repository-only files (not in the Colab zip; see CHANGELOG.md and docs/)
+| path | purpose |
+|---|---|
+| `tests/test_reference.py`, `docs/REFERENCE_DIFF.md` | independent audit of `pqn_v5.py` against purejaxql 47af6d7 |
+| `tests/test_protocol.py`, `docs/SEEDS.md` | determinism, sticky semantics, caps, return masking, truncation flag, seed identity, Freeway |
+| `tests/test_mechanism.py`, `tests/synth.py` | unit + end-to-end tests of `mechanism.py` on synthetic stages (fixtures only; never results) |
+| `tests/test_notebook.py`, `tools/check_notebook.py` | notebook vs code consistency; executes the notebook's analysis/demo cells with IPython |
+| `tools/effective_args.py` | effective (argparse last-wins) arguments of every config of a sweep stage |
+| `tools/budget.py` | GPU-hour budget + pre-registered reduction ladder from the Colab timing output |
+| `make_zip.sh` | builds the flat `drl_v5_code.zip` for Colab |
+
+Tests: `python test_v5.py && python tests/test_stats.py && python -m pytest -q tests/` (`RUN_SLOW=1` adds the real smoke-training mechanism test).
