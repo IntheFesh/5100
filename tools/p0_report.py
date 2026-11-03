@@ -89,7 +89,8 @@ def stop_rule_1(runs, ref_value, ref_step, ref_source):
     if ref_value is None:                                      # fall back to the CPU pilot (labelled as such)
         pj = json.load(open(PILOT)); ps = np.array([e["env_steps"] for e in pj["evals"]]); pr = np.array([e["greedy_return"] for e in pj["evals"]])
         ref_value, ref_step = float(pr[-1].mean()), float(ps[-1])
-        ref_source = f"CPU pilot A_orig_E2 (2 seeds, public protocol, {ref_step / 1e6:.2f}M steps): NOT a published number - the literature value could not be taken from this tool"
+        ref_source = (f"CPU pilot A_orig_E2 (2 seeds, public protocol, {ref_step / 1e6:.2f}M steps) - NOT a published number. The PQN paper (arXiv:2407.04811, Appendix C, Fig. 9 'Results in MinAtar') "
+                      "shows MinAtar learning curves only; the text gives no numeric SpaceInvaders value, so the literature magnitude must be read off the figure by the authors (pass --ref_value/--ref_step/--ref_source)")
     k = int(np.argmin(np.abs(steps - ref_step)))
     m = float(pub[k].mean()); rel = (m - ref_value) / ref_value
     return dict(rule="public_gymnax public-protocol return within 50 % of the reference at the nearest eval point", reference_value=ref_value,

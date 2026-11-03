@@ -25,6 +25,8 @@ ap.add_argument("--fps", type=int, default=24)
 ap.add_argument("--random_init", action="store_true", help="pipeline test without trained params")
 ap.add_argument("--frame_png", default=None, help="also save one still frame (at --frame_step) as PNG")
 ap.add_argument("--frame_step", type=int, default=200)
+ap.add_argument("--footer", default=None, help="extra caption line at the bottom of the video (default: none, frames unchanged)")
+ap.add_argument("--json_out", default=None, help="write what was shown: params, training-seed index, the K full-episode scores, shown score/length")
 a = ap.parse_args()
 
 env, env_params = gymnax.make("SpaceInvaders-MinAtar")
@@ -144,7 +146,7 @@ def median_episode(net, params, seeds):
 
 
 seeds = list(range(1000, 1000 + a.episodes))
-shown = []
+shown, report = [], []
 idxs = [int(v) for v in a.seed_indices.split(",")] if a.seed_indices else [a.seed_index] * len(a.panel)
 assert len(idxs) == len(a.panel), "--seed_indices needs one entry per --panel"
 for i, (path, label) in enumerate(a.panel):
@@ -153,6 +155,8 @@ for i, (path, label) in enumerate(a.panel):
     (fr, sc, tot, ln), finals = median_episode(net, params, seeds)
     print(f"{label}: episode scores {sorted(int(f) for f in finals)}  -> median shown {int(tot)} (length {ln})", flush=True)
     shown.append((label, fr, sc, tot, ln))
+    report.append(dict(label=label, params=path, seed_index=idxs[i], scale255=(i in a.scale255), episode_scores_sorted=sorted(int(f) for f in finals),
+                       episode_scores_by_env_seed={int(s_): int(f) for s_, f in zip(seeds, finals)}, shown_score=int(tot), shown_length=int(ln)))
 
 T = max(len(s[1]) for s in shown)
 gap, frames = 16, []
@@ -164,13 +168,16 @@ for t in range(T):
         if t >= len(fr) - 1:
             sub = "   game over" if ln <= a.max_steps else f"   (final {int(tot)} @ step {ln})"
         ps.append(panel(fr[i], label, sub, sc[i], i))
-    full = Image.new("RGB", (sum(p.width for p in ps) + gap * (len(ps) - 1), ps[0].height + 34), (12, 12, 16))
+    foot_h = 24 if a.footer else 0                                  # extra caption strip only when --footer is given (default frames unchanged)
+    full = Image.new("RGB", (sum(p.width for p in ps) + gap * (len(ps) - 1), ps[0].height + 34 + foot_h), (12, 12, 16))
     x = 0
     for p in ps:
         full.paste(p, (x, 0)); x += p.width + gap
     d = ImageDraw.Draw(full)
     d.text((10, ps[0].height + 8), f"SpaceInvaders-MinAtar, greedy, sticky p={a.sticky:g}, same env seeds; "
            f"median of {a.episodes} episodes shown", font=FONT_S, fill=(150, 150, 150))
+    if a.footer:
+        d.text((10, ps[0].height + 34), a.footer, font=FONT_S, fill=(235, 200, 120))
     frames.append(np.asarray(full))
     if a.frame_png and t == min(a.frame_step, T - 1):
         Image.fromarray(frames[-1]).save(a.frame_png)
@@ -181,3 +188,7 @@ if a.out.endswith(".mp4"):
 else:
     imageio.mimsave(a.out, frames, duration=1 / a.fps)
 print("wrote", a.out, len(frames), "frames")
+if a.json_out:
+    import json
+    json.dump(dict(out=a.out, frames=len(frames), fps=a.fps, max_steps=a.max_steps, game_cap=a.game_cap, sticky=a.sticky, episodes=a.episodes,
+                   env_seeds=seeds, footer=a.footer, panels=report), open(a.json_out, "w"), indent=1)

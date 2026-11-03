@@ -47,3 +47,6 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
 - Round 8: analyze.py gains `--pairs 'cfgA:refA,...'` (explicit comparison family with ONE Holm correction; additive, default output unchanged;
   verified against an independent recomputation in tests/test_analyze.py); make_paper_assets.py (F1-F5, T1, T2, paper/numbers.tex|json, results/CLAIMS.md,
   freeze verification, plan-section-2 'substantial improvement' rule), tests/test_paper_assets.py, tests/synth_results.py. Tested on synthetic trees only.
+- Round 9: render_demo.py gains `--footer` (extra caption strip) and `--json_out`; with neither option the output is frame-identical to the original (checked);
+  tools/make_demo_video.py + tools/demo_select.py (pre-registered median-seed rule, identical to the notebook's; real snapshot step labels; caption rule for
+  group B; 3:30 budget; cards; ffmpeg), tests/test_demo.py (end-to-end on tiny real models). Docs: docs/STATUS.md, docs/OPEN_DECISIONS.md; docs/ENV.md refreshed.

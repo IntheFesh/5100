@@ -55,3 +55,11 @@ AUC = 每个 seed 在所有评估点上的平均回报（按环境步等间隔�
 ## 汇报格式（每轮结束必须用）
 1. 做了什么（文件与函数级）；2. 验收标准逐条：通过/失败 + 证据（命令与输出摘录）；
 3. 发现的问题与风险（含计划层面的）；4. 需要我决定的事；5. git commit 的哈希。
+
+## 新增脚本（第 1–9 轮加入；详见 docs/STATUS.md、docs/OPEN_DECISIONS.md）
+- mechanism.py（预测 1–3 的预注册检验）、make_paper_assets.py（图表/numbers.tex/CLAIMS.md，先校验 P2 冻结）、make_zip.sh（Colab 扁平包）。
+- tools/：effective_args.py（sweep 各配置最终生效参数）、p0_report.py（第 6 轮）、select_p2.py（第 7 轮，默认 dry-run；`--write` 只对 results/ 内目录）、
+  budget.py（第 5 轮预算与预注册削减阶梯）、check_notebook.py、make_demo_video.py + demo_select.py（第 9 轮）。
+- tests/：test_reference / test_protocol / test_mechanism / test_notebook / test_budget / test_sweep / test_analyze / test_p0_report / test_select_p2 / test_paper_assets / test_demo；
+  tests/synth*.py 是**合成**测试夹具（只在临时目录，永远不是结果）。慢测试：`RUN_SLOW=1 python -m pytest -q tests/`。
+- sweep.py 新增 `--only`；analyze.py 新增 `--pairs`（单一 Holm 比较族）；render_demo.py 新增 `--footer`/`--json_out`；以上均为加法，默认行为不变（有回归测试）。
