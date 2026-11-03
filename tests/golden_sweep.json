@@ -1,0 +1,266 @@
+{
+ "P0 ": [
+  [
+   "public_gymnax",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --input_scale255 --buggy_target --seeds 10 --seed0 0 --sticky 0 --max_steps_in_episode 1000"
+  ],
+  [
+   "public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --input_scale255 --buggy_target --seeds 10 --seed0 0"
+  ],
+  [
+   "fix_target_only",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --input_scale255 --seeds 10 --seed0 0"
+  ],
+  [
+   "fix_input_only",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --buggy_target --seeds 10 --seed0 0"
+  ],
+  [
+   "fixed",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --seeds 10 --seed0 0"
+  ]
+ ],
+ "P1 ": [
+  [
+   "E2_none",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 2 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_np",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 2 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_radial",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 2 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_wd0.1",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 2 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_wd0.3",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 2 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_none",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_np",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_radial",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_wd0.1",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_wd0.3",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_np",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_radial",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_wd0.1",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_wd0.3",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --lr 2.5e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none_lr1.25e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --lr 1.25e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl np --lr 2.5e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 3 --seed0 100"
+  ]
+ ],
+ "P2 --best_E 8 --best_ctrl --norm_ctrl np --lr 2.5e-4": [
+  [
+   "public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --input_scale255 --buggy_target --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "fixed_E2",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "fixed_E8",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "ours_E8_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ]
+ ],
+ "P2 --best_E 4 --best_ctrl --norm_ctrl wd --wd 0.1": [
+  [
+   "public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --input_scale255 --buggy_target --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "fixed_E2",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "fixed_E4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ],
+  [
+   "ours_E4_wd0.1",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --epochs 4 --norm_ctrl wd --wd 0.1 --seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
+  ]
+ ],
+ "P3 --best_E 8 --best_ctrl --norm_ctrl np --lr 2.5e-4": [
+  [
+   "Breakout_public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Breakout-MinAtar --input_scale255 --buggy_target --seeds 5 --seed0 2000"
+  ],
+  [
+   "Breakout_fixed_E2",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Breakout-MinAtar --bootstrap_timeout --seeds 5 --seed0 2000"
+  ],
+  [
+   "Breakout_fixed_E8",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Breakout-MinAtar --bootstrap_timeout --epochs 8 --seeds 5 --seed0 2000"
+  ],
+  [
+   "Breakout_ours_E8_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Breakout-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 5 --seed0 2000"
+  ],
+  [
+   "Asterix_public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Asterix-MinAtar --input_scale255 --buggy_target --seeds 5 --seed0 2000"
+  ],
+  [
+   "Asterix_fixed_E2",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Asterix-MinAtar --bootstrap_timeout --seeds 5 --seed0 2000"
+  ],
+  [
+   "Asterix_fixed_E8",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Asterix-MinAtar --bootstrap_timeout --epochs 8 --seeds 5 --seed0 2000"
+  ],
+  [
+   "Asterix_ours_E8_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Asterix-MinAtar --bootstrap_timeout --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 5 --seed0 2000"
+  ],
+  [
+   "Freeway_public",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Freeway-MinAtar --input_scale255 --buggy_target --seeds 5 --seed0 2000 --max_steps_in_episode 2500 --eval_cap 2500"
+  ],
+  [
+   "Freeway_fixed_E2",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Freeway-MinAtar --seeds 5 --seed0 2000 --max_steps_in_episode 2500 --eval_cap 2500"
+  ],
+  [
+   "Freeway_fixed_E8",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Freeway-MinAtar --epochs 8 --seeds 5 --seed0 2000 --max_steps_in_episode 2500 --eval_cap 2500"
+  ],
+  [
+   "Freeway_ours_E8_np_lr2.5e-4",
+   "--steps 1e+07 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env Freeway-MinAtar --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 5 --seed0 2000 --max_steps_in_episode 2500 --eval_cap 2500"
+  ]
+ ],
+ "P1 --base --foo 1 --steps 1e6": [
+  [
+   "E2_none",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 2 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_np",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 2 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_radial",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 2 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_wd0.1",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 2 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E2_wd0.3",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 2 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_none",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_np",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_radial",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_wd0.1",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_wd0.3",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl none --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_np",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl np --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_radial",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl radial --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_wd0.1",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl wd --wd 0.1 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_wd0.3",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl wd --wd 0.3 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none_lr2.5e-4",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --lr 2.5e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_none_lr1.25e-4",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --lr 1.25e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E4_np_lr2.5e-4",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 4 --norm_ctrl np --lr 2.5e-4 --seeds 3 --seed0 100"
+  ],
+  [
+   "E8_np_lr2.5e-4",
+   "--steps 1e+06 --sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1 --env SpaceInvaders-MinAtar --bootstrap_timeout --foo 1 --epochs 8 --norm_ctrl np --lr 2.5e-4 --seeds 3 --seed0 100"
+  ]
+ ]
+}

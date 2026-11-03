@@ -19,6 +19,8 @@ ap.add_argument("--steps", type=float, default=1e7)
 ap.add_argument("--base", default="", help="extra flags added to every non-public config of P1-P3")
 ap.add_argument("--best_E", type=int, default=None)
 ap.add_argument("--best_ctrl", default=None, help='frozen P2 control incl. its lr, e.g. "--norm_ctrl np --lr 2.5e-4"')
+ap.add_argument("--only", default=None, help="comma list of config names to run (all others of the stage are skipped); default: all. "
+                "Used when P1 says P2 only confirms the fixed PQN (e.g. --only public,fixed_E2)")
 ap.add_argument("--dry", action="store_true")
 ap.add_argument("--protocol", default="--sticky 0.1 --max_steps_in_episode 10000 --eval_cap 10000 --eval_sticky 0.1",
                 help="environment protocol for every run (v5.1). The pilot showed the gymnax default (no sticky actions, "
@@ -70,9 +72,9 @@ def stage_configs(stage):
     if stage == "P2":   # confirmation on fresh seeds 1000-1009; configs frozen before running
         s = "--seeds 10 --seed0 1000 --save_params --ckpt_at 1,3"
         return [("public", f"{PUBLIC} {s}"),
-                ("fixed_E2", f"{B} {s}"),
-                (f"fixed_E{a.best_E}", f"{B} --epochs {a.best_E} {s}"),
-                (ours, f"{B} --epochs {a.best_E} {a.best_ctrl} {s}")]
+                ("fixed_E2", f"{B} {s}")] \
+            + ([(f"fixed_E{a.best_E}", f"{B} --epochs {a.best_E} {s}")] if a.best_E != 2 else []) \
+            + [(ours, f"{B} --epochs {a.best_E} {a.best_ctrl} {s}")]
     if stage == "P3":   # robustness on other MinAtar games, 5 seeds
         s = "--seeds 5 --seed0 2000"
         out = []
@@ -85,9 +87,9 @@ def stage_configs(stage):
             else:
                 cap, BB = "", B
             out += [(f"{tag}_public", f"--env {env} {PUBLIC} {s} {cap}"),
-                    (f"{tag}_fixed_E2", f"--env {env} {BB} {s} {cap}"),
-                    (f"{tag}_fixed_E{a.best_E}", f"--env {env} {BB} --epochs {a.best_E} {s} {cap}"),
-                    (f"{tag}_{ours}", f"--env {env} {BB} --epochs {a.best_E} {a.best_ctrl} {s} {cap}")]
+                    (f"{tag}_fixed_E2", f"--env {env} {BB} {s} {cap}")] \
+                + ([(f"{tag}_fixed_E{a.best_E}", f"--env {env} {BB} --epochs {a.best_E} {s} {cap}")] if a.best_E != 2 else []) \
+                + [(f"{tag}_{ours}", f"--env {env} {BB} --epochs {a.best_E} {a.best_ctrl} {s} {cap}")]
         return out
     return []
 
@@ -95,6 +97,12 @@ def stage_configs(stage):
 def run(stage):
     d = os.path.join(a.outdir, stage); os.makedirs(d, exist_ok=True)
     cfgs = stage_configs(stage)
+    if a.only:
+        want = [x for x in a.only.split(",") if x]
+        missing = [x for x in want if x not in [n for n, _ in cfgs]]
+        if missing:
+            sys.exit(f"--only: unknown config name(s) {missing}; available: {[n for n, _ in cfgs]}")
+        cfgs = [(n, f) for n, f in cfgs if n in want]
     names = [n for n, _ in cfgs]
     assert len(names) == len(set(names)), "duplicate config names in stage definition"
     failed = []

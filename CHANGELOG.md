@@ -40,3 +40,7 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
 - Round 5: make_zip.sh, notebook patched (timing hand-back note; mechanism.py after P0/P1/P2/P3 analysis; extra analyze.py --json_out calls;
   demo labels use the real snapshot steps from the JSON `ckpts` field instead of the nominal 1M/3M/10M), tools/check_notebook.py,
   tools/budget.py, tests/test_notebook.py, tests/test_budget.py.
+- Round 6 (tools/p0_report.py, tests/test_p0_report.py) and round 7 (tools/select_p2.py, tests/test_select_p2.py): analysis scripts for P0 and for the
+  P1 -> P2 selection/freeze, tested on synthetic stage trees only (no real GPU results exist yet). sweep.py gains `--only NAMES` (run a subset of a stage's
+  configs; default unchanged) and no longer creates a duplicate `fixed_E2` when `--best_E 2`; tests/golden_sweep.json (recorded from the unmodified sweep.py)
+  + tests/test_sweep.py prove that every existing config name, flag string (hence run hash) is unchanged.

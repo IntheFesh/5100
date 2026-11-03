@@ -5,8 +5,10 @@ Dynamics of the dense-layer norm follow the plan's model per gradient step k (et
     y_{k+1} = y_k + s eta_k^2 - 2 eta_k lam y_k          y = ||W||^2   (lam = 0 for 'none'; NP keeps y = ||W0||^2)
     angle_k = c * eta_k / sqrt(y_k)                       (scale-invariant layer: angular step ~ eta / ||W||)
 Learning curves: r(t) = q * R * (1 - exp(-3 t / T)) + noise, so the 'effect' of a configuration is the multiplier q."""
-import json, os
+import json, os, sys
 import numpy as np
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tools"))
 
 VERSIONS = {"jax": "0.4.38", "jaxlib": "0.4.38", "flax": "0.10.2", "optax": "0.2.4", "gymnax": "0.0.6",
             "jax_threefry_partitionable": False, "backend": "cpu"}
@@ -15,7 +17,7 @@ VERSIONS = {"jax": "0.4.38", "jaxlib": "0.4.38", "flax": "0.10.2", "optax": "0.2
 def make_run(path, *, E=2, ctrl="none", wd=0.0, lr=5e-4, seed_ids=(100, 101, 102), steps=2e6, M=32, n_envs=128, T=32, s=2.0e5,
              c_ang=1.0, n_points=20, q=1.0, R=100.0, noise=0.03, rng_seed=0, public=False, protocol_gymnax=False, w0sq=256.0,
              s_wd_factor=1.0, ang=True, env="SpaceInvaders-MinAtar", bootstrap_timeout=True, trunc_frac=0.0, public_cap_curve=True,
-             extra_args=None, ckpts=None, ang_tracks_norm=True, growth_decay=0.0):
+             extra_args=None, ckpts=None, ang_tracks_norm=True, growth_decay=0.0, args_full=None, seed_sd=0.0):
     rng = np.random.default_rng(rng_seed)
     S_ = len(seed_ids)
     per_update = n_envs * T
@@ -47,7 +49,8 @@ def make_run(path, *, E=2, ctrl="none", wd=0.0, lr=5e-4, seed_ids=(100, 101, 102
     env_steps = [u * per_update for u in eval_u]
     frac = np.asarray(env_steps) / (NU * per_update)
     curve = lambda: q * R * (1 - np.exp(-3 * frac))[:, None] * (1 + noise * rng.standard_normal((n_points, S_)))
-    train_ret = curve(); rob = curve()
+    seed_fac = 1 + seed_sd * rng.standard_normal(S_)                          # between-seed spread of the whole curve
+    train_ret = curve() * seed_fac; rob = curve() * seed_fac
     pub = np.minimum(R * 1.5 * (1 - np.exp(-6 * frac))[:, None] * (1 + 0.5 * noise * rng.standard_normal((n_points, S_))), 150.0)
     capped = np.clip((frac[:, None] * 1.6 - 0.3), 0, 1) * np.ones((1, S_)) if (public_cap_curve and (protocol_gymnax or public)) else np.zeros((n_points, S_))
     args = dict(env=env, steps=steps, num_envs=n_envs, num_steps=T, epochs=E, minibatches=M, lr=lr, gamma=0.99, lam=0.65, eps_decay=0.1,
@@ -56,6 +59,8 @@ def make_run(path, *, E=2, ctrl="none", wd=0.0, lr=5e-4, seed_ids=(100, 101, 102
                 sticky=0.0 if protocol_gymnax else 0.1, eval_cap=10000, eval_sticky=0.1, eval_every=steps / n_points, eval_episodes=64,
                 save_params=False, ckpt_at="", out=os.path.basename(path))
     args.update(extra_args or {})
+    if args_full is not None:                                                  # exact args of a sweep.py config (effective_args.effective_rows)
+        args = dict(args_full, out=os.path.basename(path))
     hist = {"update": eval_u, "env_steps": env_steps, "train_return": train_ret.tolist(), "wn_dense": wn,
             "trunc_frac": (np.full((n_points, S_), trunc_frac)).tolist(), "loss": np.zeros((n_points, S_)).tolist(),
             "chunk_seconds": [1.0] * n_points}
@@ -76,3 +81,20 @@ def make_stage(outdir, runs):
     for i, (name, kw) in enumerate(runs.items()):
         make_run(os.path.join(outdir, f"{name}__{i:010x}.json"), rng_seed=i, **kw)
     return outdir
+
+
+def stage_from_sweep(outdir, stage, *, best_E=None, best_ctrl=None, params=None, steps=None):
+    """Synthetic stage whose JSON args are EXACTLY those of the real sweep.py configs of `stage` (names, flags, seeds); `params(name, args)`
+    returns the make_run keyword overrides (effects). Returns the list of config names."""
+    from effective_args import effective_rows
+    rows = effective_rows(stage, best_E, best_ctrl)
+    runs = {}
+    for name, flags, a in rows:
+        seeds = tuple(range(a["seed0"], a["seed0"] + a["seeds"]))
+        kw = dict(E=a["epochs"], ctrl=a["norm_ctrl"], wd=a["wd"], lr=a["lr"], seed_ids=seeds, steps=steps or a["steps"], M=a["minibatches"],
+                  n_envs=a["num_envs"], T=a["num_steps"], public=bool(a["input_scale255"] and a["buggy_target"]),
+                  protocol_gymnax=(a["max_steps_in_episode"] == 1000), env=a["env"], bootstrap_timeout=a["bootstrap_timeout"], args_full=dict(a))
+        kw.update((params or (lambda n, a_: {}))(name, a))
+        runs[name] = kw
+    make_stage(outdir, runs)
+    return list(runs)
