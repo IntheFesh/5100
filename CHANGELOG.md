@@ -44,3 +44,6 @@ Behaviour changes (all GPU stages start from this version; the CPU pilot used th
   P1 -> P2 selection/freeze, tested on synthetic stage trees only (no real GPU results exist yet). sweep.py gains `--only NAMES` (run a subset of a stage's
   configs; default unchanged) and no longer creates a duplicate `fixed_E2` when `--best_E 2`; tests/golden_sweep.json (recorded from the unmodified sweep.py)
   + tests/test_sweep.py prove that every existing config name, flag string (hence run hash) is unchanged.
+- Round 8: analyze.py gains `--pairs 'cfgA:refA,...'` (explicit comparison family with ONE Holm correction; additive, default output unchanged;
+  verified against an independent recomputation in tests/test_analyze.py); make_paper_assets.py (F1-F5, T1, T2, paper/numbers.tex|json, results/CLAIMS.md,
+  freeze verification, plan-section-2 'substantial improvement' rule), tests/test_paper_assets.py, tests/synth_results.py. Tested on synthetic trees only.

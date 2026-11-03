@@ -19,6 +19,8 @@ ap.add_argument("--metric", default="robust_return", choices=["robust_return", "
 ap.add_argument("--filter", default="", help="only configs whose name starts with this prefix (e.g. a P3 game)")
 ap.add_argument("--iqm", action="store_true")
 ap.add_argument("--json_out", default=None, help="also write all numbers to this JSON file")
+ap.add_argument("--pairs", default=None, help="explicit comparison family 'cfgA:refA,cfgB:refB,...': paired difference of cfgX minus refX for every "
+                "pair, with ONE Holm correction over the whole family (written to the JSON under 'pairs'); independent of --ref")
 a = ap.parse_args()
 rng = np.random.default_rng(0)
 MIN_N = 5
@@ -110,6 +112,24 @@ m, running = len(valid), 0.0
 for i, (k, p) in enumerate(sorted(valid.items(), key=lambda kv: kv[1])):
     running = max(running, min(1.0, (m - i) * p)); out[k]["p_holm"] = running
 
+pairs_out = []
+if a.pairs:
+    for item in a.pairs.split(","):
+        c, r_ = item.split(":")
+        for nm in (c, r_):
+            if nm not in runs:
+                sys.exit(f"ERROR: --pairs: '{nm}' not found among {sorted(runs)}")
+        rc, rr = runs[c], runs[r_]
+        if rc["seed_ids"] is not None and rr["seed_ids"] is not None and rc["seed_ids"] != rr["seed_ids"]:
+            sys.exit(f"ERROR: --pairs: {c} and {r_} have different seed ids; a paired comparison is not valid")
+        diff = rc["auc"] - rr["auc"]
+        pairs_out.append(dict(config=c, ref=r_, n=int(len(diff)), diff_mean=float(diff.mean()), diff_ci=t_ci(diff),
+                              diff_rel=float(diff.mean() / max(abs(rr["auc"].mean()), 1e-9)), diff_per_seed=diff.round(2).tolist(), p_raw=signflip_p(diff)))
+    vp = {i: p["p_raw"] for i, p in enumerate(pairs_out) if not np.isnan(p["p_raw"])}
+    run_ = 0.0
+    for k_, (i, p) in enumerate(sorted(vp.items(), key=lambda kv: kv[1])):
+        run_ = max(run_, min(1.0, (len(vp) - k_) * p)); pairs_out[i]["p_holm"] = run_
+
 f1 = lambda v: "—" if v is None or (isinstance(v, float) and np.isnan(v)) else f"{v:.1f}"
 fci = lambda c: "n<5" if c is None or np.isnan(c[0]) else f"[{c[0]:.1f}, {c[1]:.1f}]"
 print(f"metric = {a.metric}   (CIs: Student-t; p: exact sign-flip permutation, Holm over {m} comparison(s) vs {a.ref})")
@@ -130,8 +150,15 @@ if a.iqm:
     for name, o in out.items():
         if "auc_iqm" in o:
             print(f"  IQM {name}: {o['auc_iqm']:.1f} [{o['auc_iqm_ci'][0]:.1f}, {o['auc_iqm_ci'][1]:.1f}] (percentile bootstrap, descriptive)")
+if pairs_out:
+    fp = lambda v: "n<5" if v is None or (isinstance(v, float) and np.isnan(v)) else f"{v:.4f}"
+    print(f"\nComparison family ({len(pairs_out)} pairs, one Holm correction over the family):")
+    print("| config vs ref | n | paired dAUC | 95% CI | rel. | raw p | Holm p |"); print("|---|---|---|---|---|---|---|")
+    for p in pairs_out:
+        print(f"| {p['config']} vs {p['ref']} | {p['n']} | {p['diff_mean']:+.1f} | {fci(p['diff_ci'])} | {p['diff_rel']*100:+.0f}% | "
+              f"{fp(p['p_raw'])} | {fp(p.get('p_holm'))} |")
 if a.json_out:
-    json.dump({"metric": a.metric, "ref": a.ref, "filter": a.filter, "configs": out}, open(a.json_out, "w"), indent=1, default=float)
+    json.dump({"metric": a.metric, "ref": a.ref, "filter": a.filter, "configs": out, **({"pairs": pairs_out} if pairs_out else {})}, open(a.json_out, "w"), indent=1, default=float)
 
 if a.plot:
     import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt

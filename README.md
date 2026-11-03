@@ -60,5 +60,7 @@ Notes
 | `tools/effective_args.py` | effective (argparse last-wins) arguments of every config of a sweep stage |
 | `tools/budget.py` | GPU-hour budget + pre-registered reduction ladder from the Colab timing output |
 | `make_zip.sh` | builds the flat `drl_v5_code.zip` for Colab |
+| `tools/p0_report.py`, `tools/select_p2.py` | P0 analysis + stopping rules; P1 selection (pre-registered rule), `frozen_P2.json` / `docs/FREEZE.md` (dry run unless `--write` on `results/P1`) |
+| `make_paper_assets.py` | one command: all paper figures, tables, `paper/numbers.tex`, `results/CLAIMS.md` (verifies the P2 freeze first) |
 
 Tests: `python test_v5.py && python tests/test_stats.py && python -m pytest -q tests/` (`RUN_SLOW=1` adds the real smoke-training mechanism test).
