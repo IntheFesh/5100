@@ -3,3 +3,5 @@
 .venv/
 __pycache__/
 third_party/
+drl_v5_code.zip
+*.bundle
