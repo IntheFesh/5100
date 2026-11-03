@@ -1,0 +1,53 @@
+{
+ "rows": [
+  {
+   "label": "public code, deterministic training",
+   "color": "#55554f",
+   "public": [
+    146,
+    150
+   ],
+   "robust": [
+    53.4,
+    98.1
+   ]
+  },
+  {
+   "label": "fixed code, deterministic training",
+   "color": "#2a78d6",
+   "public": [
+    142,
+    154
+   ],
+   "robust": [
+    62.8,
+    88.9
+   ]
+  },
+  {
+   "label": "public code, sticky training",
+   "color": "#55554f",
+   "public": [
+    145,
+    99
+   ],
+   "robust": [
+    118.6,
+    122.6
+   ]
+  },
+  {
+   "label": "fixed code, sticky training",
+   "color": "#2a78d6",
+   "public": [
+    146,
+    141
+   ],
+   "robust": [
+    122.4,
+    115.2
+   ]
+  }
+ ],
+ "note": "A/B robust from check_protocol.py (16 eps/seed); S from in-training eval at 2M (16 eps/seed)"
+}

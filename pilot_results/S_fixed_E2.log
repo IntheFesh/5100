@@ -1,0 +1,9 @@
+Gym has been unmaintained since 2022 and does not support NumPy 2.0 amongst other critical functionality.
+Please upgrade to Gymnasium, the maintained drop-in replacement of Gym, or contact the authors of your software and request that they upgrade.
+Users of this version of Gym should be able to simply replace 'import gym' with 'import gymnasium as gym' in the vast majority of cases.
+See the migration guide at https://gymnasium.farama.org/introduction/migration_guide/ for additional information.
+[  463.0s]  0.50M  public [51. 94.] (capped [0. 0.])  robust [39.8 43.6] (capped [0. 0.])  wn_dense [20.6 20.7]
+[  833.9s]  1.00M  public [26. 26.] (capped [0. 0.])  robust [51.9 72.2] (capped [0. 0.])  wn_dense [23.4 23.3]
+[ 1182.8s]  1.50M  public [139. 122.] (capped [1. 0.])  robust [86.9 88.2] (capped [0. 0.])  wn_dense [24.3 24.2]
+[ 1505.3s]  2.00M  public [146. 141.] (capped [1. 1.])  robust [122.4 115.2] (capped [0. 0.])  wn_dense [24.4 24.3]
+done 1505.4 s
